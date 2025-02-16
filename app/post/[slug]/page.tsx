@@ -1,54 +1,49 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { notFound } from 'next/navigation';
-import { use } from 'react';
+import Link from 'next/link';
 
-async function getPost(slug: string) {
-  const res = await fetch(`https://xtian-backend.onrender.com/api/posts?filters[slug][$eq]=${slug}&populate=*`,
-    {
-        "headers": {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
-        }
-    }
-  );
-  const data = await res.json();
-  
-  if (!res.ok || !data.data.length) {
-    return null;
-  }
-  return data.data[0];
+interface Post {
+  id: string;
+  title: string;
+  slug: string;
 }
 
-export default function Post({ params }: { params: Promise<{ slug: string }> }) {
-  const [post, setPost] = useState<any>(null);
-  const unwrappedParams = use(params);
+export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    async function fetchPost() {
-      const post = await getPost(unwrappedParams.slug);
-      if (!post) {
-        notFound();
-      } else {
-        setPost(post);
+    async function fetchPosts() {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL!, {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`,
+        },
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error('Failed to fetch posts:', data);
+        return;
       }
+
+      setPosts(data.data);
     }
 
-    fetchPost();
-  }, [unwrappedParams.slug]);
-
-  console.log(post)
-
-  if (!post) {
-    return <div>Loading...</div>;
-  }
+    fetchPosts();
+  }, []);
 
   return (
     <div>
-      <h1>{post.name}</h1>
-      {post.content.map((x: any, index: number) => (
-        <p key={index}>{x.children[0].text}</p>
-      ))}
+      <h1>My Blog</h1>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>
+            <Link legacyBehavior href={`/post/${post.slug}`}>
+              <a>{post.title}</a>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
