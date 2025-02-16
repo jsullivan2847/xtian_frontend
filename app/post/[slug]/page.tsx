@@ -5,7 +5,13 @@ import { notFound } from 'next/navigation';
 import { use } from 'react';
 
 async function getPost(slug: string) {
-  const res = await fetch(`http://localhost:1337/api/posts?filters[slug][$eq]=${slug}&populate=*`);
+  const res = await fetch(`https://xtian-backend.onrender.com/api/posts?filters[slug][$eq]=${slug}&populate=*`,
+    {
+        "headers": {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
+        }
+    }
+  );
   const data = await res.json();
   
   if (!res.ok || !data.data.length) {
