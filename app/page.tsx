@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchPosts() {
-      const res = await fetch('https://xtian-backend.onrender.com/api/posts?populate=*', {
+      const res = await fetch('https://xtian-backend.onrender.com/api/posts', {
         "headers": {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
       }});
