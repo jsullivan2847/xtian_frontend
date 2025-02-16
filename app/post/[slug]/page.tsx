@@ -4,16 +4,25 @@ import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import { use } from 'react';
 
-async function getPost(slug: string) {
-  const res = await fetch(`https://xtian-backend.onrender.com/api/posts?filters[slug][$eq]=${slug}&populate=*`,
-    {
-        "headers": {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
-        }
-    }
-  );
+interface PostContent {
+  type: string;
+  children: { text: string }[];
+}
+
+interface Post {
+  id: string;
+  name: string;
+  content: PostContent[];
+}
+
+async function getPost(slug: string): Promise<Post | null> {
+  const res = await fetch(`https://xtian-backend.onrender.com/api/posts?filters[slug][$eq]=${slug}&populate=*`, {
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`,
+    },
+  });
   const data = await res.json();
-  
+
   if (!res.ok || !data.data.length) {
     return null;
   }
@@ -21,7 +30,7 @@ async function getPost(slug: string) {
 }
 
 export default function Post({ params }: { params: Promise<{ slug: string }> }) {
-  const [post, setPost] = useState<any>(null);
+  const [post, setPost] = useState<Post | null>(null);
   const unwrappedParams = use(params);
 
   useEffect(() => {
@@ -37,8 +46,6 @@ export default function Post({ params }: { params: Promise<{ slug: string }> }) 
     fetchPost();
   }, [unwrappedParams.slug]);
 
-  console.log(post)
-
   if (!post) {
     return <div>Loading...</div>;
   }
@@ -46,7 +53,7 @@ export default function Post({ params }: { params: Promise<{ slug: string }> }) 
   return (
     <div>
       <h1>{post.name}</h1>
-      {post.content.map((x: any, index: number) => (
+      {post.content.map((x, index) => (
         <p key={index}>{x.children[0].text}</p>
       ))}
     </div>
