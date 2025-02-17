@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Nav from './components/nav';
 
 export default function Home() {
   const [posts, setPosts] = useState<{ id: string; title: string; slug: string }[]>([]);
@@ -26,16 +27,16 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-      <h1>My Blog</h1>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
+    <div className="">
+      <h1 className="text-3xl font-bold mb-4">Xtian World</h1>
+      <ul className="list-disc">
+        {/* {posts.map((post) => (
+          <li key={post.id} className="mb-2">
             <Link legacyBehavior href={`/post/${post.slug}`}>
-              <a>{post.title}</a>
+              <a className="text-blue-500 hover:underline">{post.title}</a>
             </Link>
           </li>
-        ))}
+        ))} */}
       </ul>
     </div>
   );
