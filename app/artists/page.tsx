@@ -1,38 +1,23 @@
-"use client";
+import Link from "next/link";
+import Card from "@/app/components/card";
+import { getAllArtists } from "@/app/lib/contentful";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-
-export default function Home() {
-  const [artists, setArtists] = useState<{ id: string; name: string; slug: string }[]>([]);
-
-  useEffect(() => {
-    async function fetchArtists() {
-      const res = await fetch('https://xtian-backend.onrender.com/api/artists', {
-        "headers": {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
-      }});
-      const data = await res.json();
-
-      if (!res.ok) {
-        console.error('Failed to fetch artists:', data);
-        return;
-      }
-
-      setArtists(data.data);
-    }
-
-    fetchArtists();
-  }, []);
+export default async function AllArtistsPage() {
+  const artists = await getAllArtists(); // Fetch all artists from Contentful
+  console.log(artists);
 
   return (
-    <div className="">
-      <ul className="list-disc">
+    <div>
+      <h1 className="text-2xl font-bold mb-4">All Artists</h1>
+      <ul className="flex flex-wrap justify-between align-center">
         {artists.map((artist) => (
-          <li key={artist.id} className="mb-2">
-            <Link legacyBehavior href={`/artist/${artist.slug}`}>
-              <a className="text-blue-500 hover:underline">{artist.name}</a>
-            </Link>
+          <li key={artist.sys.id} className="mb-2">
+            <Card
+                id={artist.sys.id}
+                name={artist.fields.name as string}
+                // summary={artist.fields.summary as string}
+                imageUrl="https://f4.bcbits.com/img/a2272273578_16.jpg"
+            />
           </li>
         ))}
       </ul>

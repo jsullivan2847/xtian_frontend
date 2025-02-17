@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function Nav() {
 
   return (
-    <nav className='size-full bg-gray-800 text-white p-4'>
+    <nav className="sticky top-0 z-10 w-full">
         <ul className='flex justify-center space-x-4'>
             <Link legacyBehavior href={`/artists`}>
             Artists

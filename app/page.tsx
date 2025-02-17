@@ -1,30 +1,28 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Nav from './components/nav';
 
 export default function Home() {
-  const [posts, setPosts] = useState<{ id: string; title: string; slug: string }[]>([]);
+  // const [posts, setPosts] = useState<{ id: string; title: string; slug: string }[]>([]);
 
-  useEffect(() => {
-    async function fetchPosts() {
-      const res = await fetch('https://xtian-backend.onrender.com/api/posts', {
-        "headers": {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
-      }});
-      const data = await res.json();
+  // useEffect(() => {
+  //   async function fetchPosts() {
+  //     const res = await fetch('https://xtian-backend.onrender.com/api/posts', {
+  //       "headers": {
+  //         Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
+  //     }});
+  //     const data = await res.json();
 
-      if (!res.ok) {
-        console.error('Failed to fetch posts:', data);
-        return;
-      }
+  //     if (!res.ok) {
+  //       console.error('Failed to fetch posts:', data);
+  //       return;
+  //     }
 
-      setPosts(data.data);
-    }
+  //     setPosts(data.data);
+  //   }
 
-    fetchPosts();
-  }, []);
+  //   fetchPosts();
+  // }, []);
 
   return (
     <div className="">
