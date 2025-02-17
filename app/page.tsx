@@ -1,41 +1,40 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 
 export default function Home() {
-  const [posts, setPosts] = useState<{ id: string; title: string; slug: string }[]>([]);
+  // const [posts, setPosts] = useState<{ id: string; title: string; slug: string }[]>([]);
 
-  useEffect(() => {
-    async function fetchPosts() {
-      const res = await fetch('https://xtian-backend.onrender.com/api/posts', {
-        "headers": {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
-      }});
-      const data = await res.json();
+  // useEffect(() => {
+  //   async function fetchPosts() {
+  //     const res = await fetch('https://xtian-backend.onrender.com/api/posts', {
+  //       "headers": {
+  //         Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT_TOKEN}`
+  //     }});
+  //     const data = await res.json();
 
-      if (!res.ok) {
-        console.error('Failed to fetch posts:', data);
-        return;
-      }
+  //     if (!res.ok) {
+  //       console.error('Failed to fetch posts:', data);
+  //       return;
+  //     }
 
-      setPosts(data.data);
-    }
+  //     setPosts(data.data);
+  //   }
 
-    fetchPosts();
-  }, []);
+  //   fetchPosts();
+  // }, []);
 
   return (
-    <div>
-      <h1>My Blog</h1>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
+    <div className="">
+      <h1 className="text-3xl font-bold mb-4">Xtian World</h1>
+      <ul className="list-disc">
+        {/* {posts.map((post) => (
+          <li key={post.id} className="mb-2">
             <Link legacyBehavior href={`/post/${post.slug}`}>
-              <a>{post.title}</a>
+              <a className="text-blue-500 hover:underline">{post.title}</a>
             </Link>
           </li>
-        ))}
+        ))} */}
       </ul>
     </div>
   );
